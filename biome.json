@@ -1,0 +1,25 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.4.1/schema.json",
+	"files": {
+		"includes": ["**", "!.next", "!node_modules", "!app/globals.css"]
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"a11y": {
+				"noStaticElementInteractions": "off"
+			}
+		}
+	},
+	"formatter": {
+		"enabled": true
+	},
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	}
+}

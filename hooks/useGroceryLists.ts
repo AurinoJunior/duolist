@@ -1,223 +1,257 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { GroceryList, GroceryItem, Category } from '@/types';
-import { storage, listHelpers } from '@/lib/storage';
+import { useCallback, useEffect, useState } from "react";
+import { listHelpers, storage } from "@/lib/storage";
+import type { Category, GroceryItem, GroceryList } from "@/types";
 
 /**
  * Hook principal para gerenciar estado das listas de compras
  * Centraliza toda lógica de manipulação de dados
  */
 export function useGroceryLists() {
-  const [lists, setLists] = useState<GroceryList[]>([]);
-  const [activeListId, setActiveListId] = useState<string | null>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
+	const [lists, setLists] = useState<GroceryList[]>([]);
+	const [activeListId, setActiveListId] = useState<string | null>(null);
+	const [isLoaded, setIsLoaded] = useState(false);
 
-  // Carrega dados do localStorage na inicialização
-  useEffect(() => {
-    const savedLists = storage.getLists();
-    const savedActiveId = storage.getActiveListId();
-    
-    setLists(savedLists);
-    
-    // Se não há lista ativa mas existem listas, seleciona a primeira não arquivada
-    if (!savedActiveId && savedLists.length > 0) {
-      const firstActive = savedLists.find(l => !l.isArchived);
-      if (firstActive) {
-        setActiveListId(firstActive.id);
-        storage.setActiveListId(firstActive.id);
-      }
-    } else {
-      setActiveListId(savedActiveId);
-    }
-    
-    setIsLoaded(true);
-  }, []);
+	// Carrega dados do localStorage na inicialização
+	useEffect(() => {
+		const savedLists = storage.getLists();
+		const savedActiveId = storage.getActiveListId();
 
-  // Persiste mudanças no localStorage
-  useEffect(() => {
-    if (isLoaded) {
-      storage.saveLists(lists);
-    }
-  }, [lists, isLoaded]);
+		setLists(savedLists);
 
-  // Busca lista ativa
-  const activeList = lists.find(l => l.id === activeListId) || null;
+		// Se não há lista ativa mas existem listas, seleciona a primeira não arquivada
+		if (!savedActiveId && savedLists.length > 0) {
+			const firstActive = savedLists.find((l) => !l.isArchived);
+			if (firstActive) {
+				setActiveListId(firstActive.id);
+				storage.setActiveListId(firstActive.id);
+			}
+		} else {
+			setActiveListId(savedActiveId);
+		}
 
-  /**
-   * Cria uma nova lista
-   */
-  const createList = useCallback((name: string) => {
-    const newList = listHelpers.createList(name);
-    setLists(prev => [...prev, newList]);
-    setActiveListId(newList.id);
-    storage.setActiveListId(newList.id);
-    return newList;
-  }, []);
+		setIsLoaded(true);
+	}, []);
 
-  /**
-   * Seleciona lista ativa
-   */
-  const selectList = useCallback((id: string) => {
-    setActiveListId(id);
-    storage.setActiveListId(id);
-  }, []);
+	// Persiste mudanças no localStorage
+	useEffect(() => {
+		if (isLoaded) {
+			storage.saveLists(lists);
+		}
+	}, [lists, isLoaded]);
 
-  /**
-   * Adiciona item à lista ativa
-   */
-  const addItem = useCallback((name: string, category: Category) => {
-    if (!activeListId) return;
+	// Busca lista ativa
+	const activeList = lists.find((l) => l.id === activeListId) || null;
 
-    setLists(prev => prev.map(list => {
-      if (list.id !== activeListId) return list;
+	/**
+	 * Cria uma nova lista
+	 */
+	const createList = useCallback((name: string) => {
+		const newList = listHelpers.createList(name);
+		setLists((prev) => [...prev, newList]);
+		setActiveListId(newList.id);
+		storage.setActiveListId(newList.id);
+		return newList;
+	}, []);
 
-      const newItem: GroceryItem = {
-        id: crypto.randomUUID(),
-        name,
-        category,
-        completed: false,
-        order: list.items.length,
-        createdAt: new Date().toISOString(),
-      };
+	/**
+	 * Seleciona lista ativa
+	 */
+	const selectList = useCallback((id: string) => {
+		setActiveListId(id);
+		storage.setActiveListId(id);
+	}, []);
 
-      return listHelpers.touchList({
-        ...list,
-        items: [...list.items, newItem],
-      });
-    }));
-  }, [activeListId]);
+	/**
+	 * Adiciona item à lista ativa
+	 */
+	const addItem = useCallback(
+		(name: string, category: Category) => {
+			if (!activeListId) return;
 
-  /**
-   * Atualiza item
-   */
-  const updateItem = useCallback((itemId: string, updates: Partial<GroceryItem>) => {
-    if (!activeListId) return;
+			setLists((prev) =>
+				prev.map((list) => {
+					if (list.id !== activeListId) return list;
 
-    setLists(prev => prev.map(list => {
-      if (list.id !== activeListId) return list;
+					const newItem: GroceryItem = {
+						id: crypto.randomUUID(),
+						name,
+						category,
+						completed: false,
+						order: list.items.length,
+						createdAt: new Date().toISOString(),
+					};
 
-      return listHelpers.touchList({
-        ...list,
-        items: list.items.map(item => 
-          item.id === itemId ? { ...item, ...updates } : item
-        ),
-      });
-    }));
-  }, [activeListId]);
+					return listHelpers.touchList({
+						...list,
+						items: [...list.items, newItem],
+					});
+				}),
+			);
+		},
+		[activeListId],
+	);
 
-  /**
-   * Remove item
-   */
-  const removeItem = useCallback((itemId: string) => {
-    if (!activeListId) return;
+	/**
+	 * Atualiza item
+	 */
+	const updateItem = useCallback(
+		(itemId: string, updates: Partial<GroceryItem>) => {
+			if (!activeListId) return;
 
-    setLists(prev => prev.map(list => {
-      if (list.id !== activeListId) return list;
+			setLists((prev) =>
+				prev.map((list) => {
+					if (list.id !== activeListId) return list;
 
-      return listHelpers.touchList({
-        ...list,
-        items: list.items.filter(item => item.id !== itemId),
-      });
-    }));
-  }, [activeListId]);
+					return listHelpers.touchList({
+						...list,
+						items: list.items.map((item) =>
+							item.id === itemId ? { ...item, ...updates } : item,
+						),
+					});
+				}),
+			);
+		},
+		[activeListId],
+	);
 
-  /**
-   * Reordena itens (usado no drag and drop)
-   */
-  const reorderItems = useCallback((reorderedItems: GroceryItem[]) => {
-    if (!activeListId) return;
+	/**
+	 * Remove item
+	 */
+	const removeItem = useCallback(
+		(itemId: string) => {
+			if (!activeListId) return;
 
-    setLists(prev => prev.map(list => {
-      if (list.id !== activeListId) return list;
+			setLists((prev) =>
+				prev.map((list) => {
+					if (list.id !== activeListId) return list;
 
-      const itemsWithOrder = reorderedItems.map((item, index) => ({
-        ...item,
-        order: index,
-      }));
+					return listHelpers.touchList({
+						...list,
+						items: list.items.filter((item) => item.id !== itemId),
+					});
+				}),
+			);
+		},
+		[activeListId],
+	);
 
-      return listHelpers.touchList({
-        ...list,
-        items: itemsWithOrder,
-      });
-    }));
-  }, [activeListId]);
+	/**
+	 * Reordena itens (usado no drag and drop)
+	 */
+	const reorderItems = useCallback(
+		(reorderedItems: GroceryItem[]) => {
+			if (!activeListId) return;
 
-  /**
-   * Arquiva lista (move para histórico)
-   */
-  const archiveList = useCallback((id: string) => {
-    setLists(prev => prev.map(list =>
-      list.id === id ? { ...list, isArchived: true } : list
-    ));
+			setLists((prev) =>
+				prev.map((list) => {
+					if (list.id !== activeListId) return list;
 
-    // Se arquivou a lista ativa, seleciona outra
-    if (id === activeListId) {
-      const nextActive = lists.find(l => l.id !== id && !l.isArchived);
-      if (nextActive) {
-        selectList(nextActive.id);
-      } else {
-        setActiveListId(null);
-      }
-    }
-  }, [activeListId, lists, selectList]);
+					const itemsWithOrder = reorderedItems.map((item, index) => ({
+						...item,
+						order: index,
+					}));
 
-  /**
-   * Deleta lista permanentemente
-   */
-  const deleteList = useCallback((id: string) => {
-    setLists(prev => prev.filter(list => list.id !== id));
+					return listHelpers.touchList({
+						...list,
+						items: itemsWithOrder,
+					});
+				}),
+			);
+		},
+		[activeListId],
+	);
 
-    if (id === activeListId) {
-      const nextActive = lists.find(l => l.id !== id && !l.isArchived);
-      if (nextActive) {
-        selectList(nextActive.id);
-      } else {
-        setActiveListId(null);
-      }
-    }
-  }, [activeListId, lists, selectList]);
+	/**
+	 * Arquiva lista (move para histórico)
+	 */
+	const archiveList = useCallback(
+		(id: string) => {
+			setLists((prev) =>
+				prev.map((list) =>
+					list.id === id ? { ...list, isArchived: true } : list,
+				),
+			);
 
-  /**
-   * Gera texto para compartilhar
-   */
-  const shareList = useCallback((id: string) => {
-    const list = lists.find(l => l.id === id);
-    if (!list) return '';
+			// Se arquivou a lista ativa, seleciona outra
+			if (id === activeListId) {
+				const nextActive = lists.find((l) => l.id !== id && !l.isArchived);
+				if (nextActive) {
+					selectList(nextActive.id);
+				} else {
+					setActiveListId(null);
+				}
+			}
+		},
+		[activeListId, lists, selectList],
+	);
 
-    let text = `📝 ${list.name}\n\n`;
-    
-    const itemsByCategory = list.items.reduce((acc, item) => {
-      if (!acc[item.category]) acc[item.category] = [];
-      acc[item.category].push(item);
-      return acc;
-    }, {} as Record<Category, GroceryItem[]>);
+	/**
+	 * Deleta lista permanentemente
+	 */
+	const deleteList = useCallback(
+		(id: string) => {
+			setLists((prev) => prev.filter((list) => list.id !== id));
 
-    Object.entries(itemsByCategory).forEach(([category, items]) => {
-      text += `${category.toUpperCase()}\n`;
-      items.forEach(item => {
-        text += `${item.completed ? '✓' : '○'} ${item.name}\n`;
-      });
-      text += '\n';
-    });
+			if (id === activeListId) {
+				const nextActive = lists.find((l) => l.id !== id && !l.isArchived);
+				if (nextActive) {
+					selectList(nextActive.id);
+				} else {
+					setActiveListId(null);
+				}
+			}
+		},
+		[activeListId, lists, selectList],
+	);
 
-    return text;
-  }, [lists]);
+	/**
+	 * Gera texto para compartilhar
+	 */
+	const shareList = useCallback(
+		(id: string) => {
+			const list = lists.find((l) => l.id === id);
+			if (!list) return "";
 
-  return {
-    lists,
-    activeList,
-    activeLists: lists.filter(l => !l.isArchived),
-    archivedLists: lists.filter(l => l.isArchived),
-    isLoaded,
-    createList,
-    selectList,
-    addItem,
-    updateItem,
-    removeItem,
-    reorderItems,
-    archiveList,
-    deleteList,
-    shareList,
-  };
+			let text = `📝 ${list.name}\n\n`;
+
+			const itemsByCategory = list.items.reduce(
+				(acc, item) => {
+					if (!acc[item.category]) acc[item.category] = [];
+					acc[item.category].push(item);
+					return acc;
+				},
+				{} as Record<Category, GroceryItem[]>,
+			);
+
+			Object.entries(itemsByCategory).forEach(([category, items]) => {
+				text += `${category.toUpperCase()}\n`;
+				items.forEach((item) => {
+					text += `${item.completed ? "✓" : "○"} ${item.name}\n`;
+				});
+				text += "\n";
+			});
+
+			return text;
+		},
+		[lists],
+	);
+
+	return {
+		lists,
+		activeList,
+		activeLists: lists.filter((l) => !l.isArchived),
+		archivedLists: lists.filter((l) => l.isArchived),
+		isLoaded,
+		createList,
+		selectList,
+		addItem,
+		updateItem,
+		removeItem,
+		reorderItems,
+		archiveList,
+		deleteList,
+		shareList,
+	};
 }
