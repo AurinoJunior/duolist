@@ -1,16 +1,16 @@
-import type { Metadata } from 'next';
-import { DM_Sans } from 'next/font/google';
-import './globals.css';
+import type { Metadata } from "next";
+import { DM_Sans } from "next/font/google";
+import "./globals.css";
 
-const dmSans = DM_Sans({ 
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
-  variable: '--font-dm-sans',
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-dm-sans",
 });
 
 export const metadata: Metadata = {
-  title: 'Lista de Compras',
-  description: 'Organize suas compras de forma simples e eficiente',
+  title: "Lista de Compras",
+  description: "Organize suas compras de forma simples e eficiente",
 };
 
 export default function RootLayout({
