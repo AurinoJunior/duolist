@@ -4,11 +4,15 @@ import { AnimatePresence, motion, Reorder } from "framer-motion";
 import { Archive, ShoppingBag } from "lucide-react";
 import { useState } from "react";
 import { AddItemForm } from "@/components/AddItemForm";
+import { Footer } from "@/components/Footer";
 import { GroceryItemComponent } from "@/components/GroceryItemComponent";
+import { Header } from "@/components/Header";
 import { ListSelector } from "@/components/ListSelector";
+import { Loading } from "@/components/Loading";
 import { useGroceryLists } from "@/hooks/useGroceryLists";
 
 export default function Home() {
+	const [showArchived, setShowArchived] = useState(false);
 	const {
 		activeLists,
 		archivedLists,
@@ -25,85 +29,15 @@ export default function Home() {
 		shareList,
 	} = useGroceryLists();
 
-	const [showArchived, setShowArchived] = useState(false);
-
-	// Aguarda carregamento do localStorage
-	if (!isLoaded) {
-		return (
-			<div className="min-h-screen bg-gradient-to-br from-orange-50 via-peach-50 to-cream-50 flex items-center justify-center">
-				<motion.div
-					animate={{ rotate: 360 }}
-					transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-				>
-					<ShoppingBag size={40} className="text-orange-400" />
-				</motion.div>
-			</div>
-		);
-	}
-
-	// Estado inicial: cria primeira lista
-	if (activeLists.length === 0 && !showArchived) {
-		return (
-			<div className="min-h-screen bg-gradient-to-br from-orange-50 via-peach-50 to-cream-50 flex items-center justify-center p-4">
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					className="max-w-md w-full text-center"
-				>
-					<motion.div
-						animate={{ y: [0, -10, 0] }}
-						transition={{ duration: 2, repeat: Infinity }}
-						className="inline-block mb-6"
-					>
-						<ShoppingBag size={64} className="text-orange-400 mx-auto" />
-					</motion.div>
-					<h1 className="text-3xl font-bold text-neutral-800 mb-3">
-						Bem-vindo!
-					</h1>
-					<p className="text-neutral-600 mb-8">
-						Crie sua primeira lista de compras para começar
-					</p>
-					<button
-						type="button"
-						onClick={() => createList("Minha Lista")}
-						className="
-              px-8 py-4 rounded-2xl
-              bg-gradient-to-r from-orange-400 to-peach-400
-              text-white font-semibold text-lg
-              hover:shadow-lg hover:scale-105
-              transition-all duration-200
-            "
-					>
-						Criar Lista
-					</button>
-				</motion.div>
-			</div>
-		);
-	}
+	if (!isLoaded) return <Loading />;
 
 	const displayLists = showArchived ? archivedLists : activeLists;
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-orange-50 via-peach-50 to-cream-50">
-			<div className="max-w-2xl mx-auto px-4 py-8">
-				{/* Header */}
-				<motion.header
-					initial={{ opacity: 0, y: -20 }}
-					animate={{ opacity: 1, y: 0 }}
-					className="mb-8"
-				>
-					<div className="flex items-center gap-3 mb-2">
-						<ShoppingBag size={32} className="text-orange-400" />
-						<h1 className="text-3xl font-bold text-neutral-800">
-							Lista de Compras
-						</h1>
-					</div>
-					<p className="text-neutral-600 ml-11">
-						Organize suas compras de forma simples e eficiente
-					</p>
-				</motion.header>
+			<div className="max-w-2xl mx-auto px-4 py-8 relative h-dvh">
+				<Header />
 
-				{/* Seletor de Lista */}
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -265,14 +199,7 @@ export default function Home() {
 					</motion.div>
 				) : null}
 
-				<motion.footer
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ delay: 0.4 }}
-					className="mt-12 text-center text-sm text-neutral-400"
-				>
-					<p>Feito com 🧡 para facilitar suas compras</p>
-				</motion.footer>
+				<Footer />
 			</div>
 		</div>
 	);
