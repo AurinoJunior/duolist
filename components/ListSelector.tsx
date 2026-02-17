@@ -112,29 +112,25 @@ export function ListSelector({
 											</p>
 										</button>
 
-										<div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+										<div className="flex gap-3">
 											<button
 												type="button"
 												onClick={() => {
 													onArchive(list.id);
 													setIsOpen(false);
 												}}
-												className="p-2 rounded-lg hover:bg-yellow-50 transition-colors"
+												className="p-2 rounded-lg bg-yellow-50"
 												title="Arquivar"
 											>
-												<Archive size={14} className="text-yellow-600" />
+												<Archive size={18} className="text-yellow-800" />
 											</button>
 											<button
 												type="button"
-												onClick={() => {
-													if (confirm(`Deletar "${list.name}"?`)) {
-														onDelete(list.id);
-													}
-												}}
-												className="p-2 rounded-lg hover:bg-red-50 transition-colors"
+												onClick={() => onDelete(list.id)}
+												className="p-2 rounded-lg bg-red-50"
 												title="Deletar"
 											>
-												<Trash2 size={14} className="text-red-500" />
+												<Trash2 size={18} className="text-red-500" />
 											</button>
 										</div>
 									</div>
@@ -192,19 +188,6 @@ export function ListSelector({
 					</motion.div>
 				)}
 			</AnimatePresence>
-
-			{isOpen && (
-				<div
-					className="fixed inset-0 z-40"
-					onClick={() => setIsOpen(false)}
-					onKeyDown={(e) => {
-						if (e.key === "Enter") {
-							setIsOpen(false);
-							return;
-						}
-					}}
-				/>
-			)}
 		</div>
 	);
 }
