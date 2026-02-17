@@ -26,7 +26,6 @@ export default function Home() {
 		reorderItems,
 		archiveList,
 		deleteList,
-		shareList,
 	} = useGroceryLists();
 
 	if (!isLoaded) return <Loading />;
@@ -51,7 +50,6 @@ export default function Home() {
 						onCreate={createList}
 						onArchive={archiveList}
 						onDelete={deleteList}
-						onShare={shareList}
 					/>
 				</motion.div>
 

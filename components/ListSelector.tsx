@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Archive, ChevronDown, Plus, Share2, Trash2 } from "lucide-react";
+import { Archive, ChevronDown, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import type { GroceryList } from "@/types";
 
@@ -12,7 +12,6 @@ interface ListSelectorProps {
 	onCreate: (name: string) => void;
 	onArchive: (id: string) => void;
 	onDelete: (id: string) => void;
-	onShare: (id: string) => string;
 }
 
 export function ListSelector({
@@ -22,7 +21,6 @@ export function ListSelector({
 	onCreate,
 	onArchive,
 	onDelete,
-	onShare,
 }: ListSelectorProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isCreating, setIsCreating] = useState(false);
@@ -36,12 +34,6 @@ export function ListSelector({
 			setNewListName("");
 			setIsCreating(false);
 		}
-	};
-
-	const handleShare = (id: string) => {
-		const text = onShare(id);
-		navigator.clipboard.writeText(text);
-		alert("Lista copiada! Cole onde quiser 📋");
 	};
 
 	return (
@@ -121,14 +113,6 @@ export function ListSelector({
 										</button>
 
 										<div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-											<button
-												type="button"
-												onClick={() => handleShare(list.id)}
-												className="p-2 rounded-lg hover:bg-blue-50 transition-colors"
-												title="Compartilhar"
-											>
-												<Share2 size={14} className="text-blue-500" />
-											</button>
 											<button
 												type="button"
 												onClick={() => {
