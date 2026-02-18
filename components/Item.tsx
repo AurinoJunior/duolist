@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { GripVertical, Trash2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { CATEGORIES } from "@/lib/constants";
 import type { TItem } from "@/types";
 
@@ -9,20 +10,45 @@ interface ItemProps {
 	item: TItem;
 	onToggle: (id: string) => void;
 	onDelete: (id: string) => void;
+	onRename: (id: string, name: string) => void;
 	isDragging?: boolean;
 }
 
 /**
  * Componente individual de item da lista
- * Exibe checkbox, nome, categoria e botão de deletar
+ * Exibe checkbox, nome e botão de deletar
  */
 export function Item({
 	item,
 	onToggle,
 	onDelete,
+	onRename,
 	isDragging = false,
 }: ItemProps) {
 	const category = CATEGORIES.find((c) => c.value === item.category);
+	const [isEditing, setIsEditing] = useState(false);
+	const [draft, setDraft] = useState(item.name);
+	const inputRef = useRef<HTMLInputElement>(null);
+
+	useEffect(() => {
+		if (isEditing) inputRef.current?.focus();
+	}, [isEditing]);
+
+	const startEditing = () => {
+		setDraft(item.name);
+		setIsEditing(true);
+	};
+
+	const commitEdit = () => {
+		const trimmed = draft.trim();
+		if (trimmed && trimmed !== item.name) onRename(item.id, trimmed);
+		setIsEditing(false);
+	};
+
+	const cancelEdit = () => {
+		setDraft(item.name);
+		setIsEditing(false);
+	};
 
 	return (
 		<motion.div
@@ -75,14 +101,37 @@ export function Item({
 
 			{/* Item Name */}
 			<div className="flex-1 min-w-0">
-				<p
-					className={`
-          text-base font-medium transition-all duration-200
-          ${item.completed ? "line-through text-neutral-400" : "text-neutral-800"}
-        `}
-				>
-					{item.name}
-				</p>
+				{isEditing ? (
+					<input
+						ref={inputRef}
+						value={draft}
+						onChange={(e) => setDraft(e.target.value)}
+						onBlur={commitEdit}
+						onKeyDown={(e) => {
+							if (e.key === "Enter") commitEdit();
+							if (e.key === "Escape") cancelEdit();
+						}}
+						className="
+							w-full text-base font-medium bg-orange-50
+							border border-orange-300 rounded-lg px-2 py-0.5
+							outline-none focus:ring-2 focus:ring-orange-300
+							text-neutral-800
+						"
+					/>
+				) : (
+					<p
+						onClick={startEditing}
+						onKeyDown={(e) => {
+							if (e.key === "Enter" || e.key === " ") startEditing();
+						}}
+						className={`
+							text-base font-medium transition-all duration-200 cursor-text select-none
+							${item.completed ? "line-through text-neutral-400" : "text-neutral-800"}
+						`}
+					>
+						{item.name}
+					</p>
+				)}
 			</div>
 
 			{/* Delete Button */}

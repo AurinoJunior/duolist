@@ -56,6 +56,7 @@ export const ItensList = ({
 												updateItem(id, { completed: !item.completed })
 											}
 											onDelete={removeItem}
+											onRename={(id, name) => updateItem(id, { name })}
 										/>
 									</Reorder.Item>
 								))}
