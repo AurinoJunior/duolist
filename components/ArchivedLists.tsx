@@ -30,12 +30,9 @@ export const ArchivedLists = ({
 			) : (
 				<motion.ul className="flex flex-col gap-3 pb-16">
 					{archivedLists.map((list, index) => {
-						const completedCount = list.items.filter(
-							(item) => item.completed,
-						).length;
 						const formattedDate = new Intl.DateTimeFormat("pt-BR", {
 							day: "2-digit",
-							month: "short",
+							month: "long",
 							year: "numeric",
 						}).format(new Date(list.updatedAt));
 
@@ -56,8 +53,7 @@ export const ArchivedLists = ({
 									<p className="text-sm text-neutral-500 mt-0.5">
 										{list.items.length === 0
 											? "Sem itens"
-											: `${completedCount} de ${list.items.length} ${list.items.length === 1 ? "item" : "itens"} concluído${completedCount !== 1 ? "s" : ""}`}{" "}
-										· {formattedDate}
+											: `${list.items.length} ${list.items.length === 1 ? "item" : "itens"} / ${formattedDate}`}
 									</p>
 								</div>
 								<button
