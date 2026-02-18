@@ -3,24 +3,24 @@
 import type { Dispatch, SetStateAction } from "react";
 import { useCallback } from "react";
 import { listHelpers } from "@/lib/storage";
-import type { Category, GroceryItem, GroceryList } from "@/types";
+import type { TCategory, TItem, TList } from "@/types";
 
 /**
  * Ações de CRUD para itens dentro da lista ativa
  */
 export function useItemActions(
 	activeListId: string | null,
-	setLists: Dispatch<SetStateAction<GroceryList[]>>,
+	setLists: Dispatch<SetStateAction<TList[]>>,
 ) {
 	const addItem = useCallback(
-		(name: string, category: Category) => {
+		(name: string, category: TCategory) => {
 			if (!activeListId) return;
 
 			setLists((prev) =>
 				prev.map((list) => {
 					if (list.id !== activeListId) return list;
 
-					const newItem: GroceryItem = {
+					const newItem: TItem = {
 						id: crypto.randomUUID(),
 						name,
 						category,
@@ -40,7 +40,7 @@ export function useItemActions(
 	);
 
 	const updateItem = useCallback(
-		(itemId: string, updates: Partial<GroceryItem>) => {
+		(itemId: string, updates: Partial<TItem>) => {
 			if (!activeListId) return;
 
 			setLists((prev) =>
@@ -78,7 +78,7 @@ export function useItemActions(
 	);
 
 	const reorderItems = useCallback(
-		(reorderedItems: GroceryItem[]) => {
+		(reorderedItems: TItem[]) => {
 			if (!activeListId) return;
 
 			setLists((prev) =>

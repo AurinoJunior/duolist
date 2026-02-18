@@ -4,10 +4,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Plus, X } from "lucide-react";
 import { useState } from "react";
 import { CATEGORIES } from "@/lib/constants";
-import type { Category } from "@/types";
+import type { TCategory } from "@/types";
 
 interface AddItemFormProps {
-	onAdd: (name: string, category: Category) => void;
+	onAdd: (name: string, category: TCategory) => void;
 }
 
 /**
@@ -17,7 +17,7 @@ interface AddItemFormProps {
 export function AddItemForm({ onAdd }: AddItemFormProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [itemName, setItemName] = useState("");
-	const [selectedCategory, setSelectedCategory] = useState<Category>("outros");
+	const [selectedCategory, setSelectedCategory] = useState<TCategory>("outros");
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();

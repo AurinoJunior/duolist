@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { storage } from "@/lib/storage";
-import type { GroceryList } from "@/types";
+import type { TList } from "@/types";
 
 /**
  * Gerencia o estado base da aplicação e sincronização com localStorage
  */
 export function useGroceryStorage() {
-	const [lists, setLists] = useState<GroceryList[]>([]);
+	const [lists, setLists] = useState<TList[]>([]);
 	const [activeListId, setActiveListId] = useState<string | null>(null);
 	const [isLoaded, setIsLoaded] = useState(false);
 

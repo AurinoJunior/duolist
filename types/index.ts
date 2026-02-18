@@ -1,7 +1,3 @@
-/**
- * Tipos principais da aplicação de lista de compras
- */
-
 export type TCategory =
 	| "frutas"
 	| "verduras"

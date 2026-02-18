@@ -3,15 +3,15 @@
 import type { Dispatch, SetStateAction } from "react";
 import { useCallback } from "react";
 import { listHelpers, storage } from "@/lib/storage";
-import type { GroceryList } from "@/types";
+import type { TList } from "@/types";
 
 /**
  * Ações de CRUD para listas de compras
  */
 export function useListActions(
-	lists: GroceryList[],
+	lists: TList[],
 	activeListId: string | null,
-	setLists: Dispatch<SetStateAction<GroceryList[]>>,
+	setLists: Dispatch<SetStateAction<TList[]>>,
 	setActiveListId: Dispatch<SetStateAction<string | null>>,
 ) {
 	const selectList = useCallback(

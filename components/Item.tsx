@@ -3,10 +3,10 @@
 import { motion } from "framer-motion";
 import { GripVertical, Trash2 } from "lucide-react";
 import { CATEGORIES } from "@/lib/constants";
-import type { GroceryItem } from "@/types";
+import type { TItem } from "@/types";
 
 interface ItemProps {
-	item: GroceryItem;
+	item: TItem;
 	onToggle: (id: string) => void;
 	onDelete: (id: string) => void;
 	isDragging?: boolean;

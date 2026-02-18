@@ -28,10 +28,8 @@ export const ItensList = ({
 			transition={{ delay: 0.2 }}
 			className="space-y-6"
 		>
-			{/* Formulário de Adicionar */}
 			<AddItemForm onAdd={addItem} />
 
-			{/* Lista de Itens */}
 			{activeList.items.length > 0 ? (
 				<div className="space-y-3">
 					<div className="flex items-center justify-between px-2">
