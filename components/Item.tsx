@@ -73,7 +73,7 @@ export function Item({
 				)}
 			</button>
 
-			{/* Item Info */}
+			{/* Item Name */}
 			<div className="flex-1 min-w-0">
 				<p
 					className={`
@@ -83,10 +83,6 @@ export function Item({
 				>
 					{item.name}
 				</p>
-				<div className="flex items-center gap-1.5 mt-1">
-					<span className="text-sm">{category?.emoji}</span>
-					<span className="text-xs text-neutral-500">{category?.label}</span>
-				</div>
 			</div>
 
 			{/* Delete Button */}
