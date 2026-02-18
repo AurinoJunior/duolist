@@ -1,8 +1,12 @@
 import { motion } from "framer-motion";
-import { Archive, ShoppingBag } from "lucide-react";
+import { Archive, ArrowLeft, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 
-export const Header = () => {
+interface HeaderProps {
+	backHref?: string;
+}
+
+export const Header = ({ backHref }: HeaderProps) => {
 	return (
 		<motion.header
 			initial={{ opacity: 0, y: -20 }}
@@ -14,11 +18,19 @@ export const Header = () => {
 					<ShoppingBag size={32} className="text-orange-400" />
 					<h1 className="text-3xl font-bold text-neutral-800">Duolist</h1>
 				</div>
-				<Link href="/arquivados">
-					<div className="w-8 h-8 bg-orange-400 rounded-xl flex items-center justify-center">
-						<Archive size={18} className="text-orange-100" />
-					</div>
-				</Link>
+				{backHref ? (
+					<Link href={backHref}>
+						<div className="w-8 h-8 bg-orange-400 rounded-xl flex items-center justify-center">
+							<ArrowLeft size={18} className="text-orange-100" />
+						</div>
+					</Link>
+				) : (
+					<Link href="/arquivados">
+						<div className="w-8 h-8 bg-orange-400 rounded-xl flex items-center justify-center">
+							<Archive size={18} className="text-orange-100" />
+						</div>
+					</Link>
+				)}
 			</div>
 			<p className="text-neutral-600">
 				Organizando as compras, pra não voltar só com besteira.
