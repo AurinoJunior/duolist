@@ -44,9 +44,9 @@ export const storage = {
 	/**
 	 * Define lista ativa
 	 */
-	setActiveListId: (id: string): void => {
+	setActiveListId: (id: string | null): void => {
 		if (typeof window === "undefined") return;
-		localStorage.setItem(STORAGE_KEYS.ACTIVE_LIST, id);
+		localStorage.setItem(STORAGE_KEYS.ACTIVE_LIST, id ?? "");
 	},
 
 	/**

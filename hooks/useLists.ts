@@ -16,6 +16,7 @@ export function useLists() {
 	const { isLoaded } = useListsStorage({
 		lists,
 		setLists,
+		activeListId,
 		setActiveListId,
 	});
 

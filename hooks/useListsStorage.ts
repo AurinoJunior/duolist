@@ -10,12 +10,14 @@ import type { TList } from "@/types";
 interface ListStorageProps {
 	lists: TList[];
 	setLists: Dispatch<SetStateAction<TList[]>>;
+	activeListId: string | null;
 	setActiveListId: Dispatch<SetStateAction<string | null>>;
 }
 
 export function useListsStorage({
 	lists,
 	setLists,
+	activeListId,
 	setActiveListId,
 }: ListStorageProps) {
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -44,6 +46,7 @@ export function useListsStorage({
 	useEffect(() => {
 		if (isLoaded) {
 			storage.saveLists(lists);
+			storage.setActiveListId(activeListId);
 		}
 	}, [lists, isLoaded]);
 
