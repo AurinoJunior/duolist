@@ -59,7 +59,7 @@ export function ListSelector({
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ delay: 0.1 }}
-			className="mb-6 relative"
+			className="relative"
 			ref={containerRef}
 		>
 			<button

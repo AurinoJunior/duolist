@@ -1,11 +1,9 @@
 import { AnimatePresence, motion, Reorder } from "framer-motion";
-import type { TCategory, TItem, TList } from "@/types";
-import { AddItemForm } from "./AddItemForm";
+import type { TItem, TList } from "@/types";
 import { Item } from "./Item";
 
 interface ItensListProps {
 	activeList: TList | null;
-	addItem: (name: string, category: TCategory) => void;
 	reorderItems: (reorderedItems: TItem[]) => void;
 	updateItem: (itemId: string, updates: Partial<TItem>) => void;
 	removeItem: (itemId: string) => void;
@@ -13,7 +11,6 @@ interface ItensListProps {
 
 export const ItensList = ({
 	activeList,
-	addItem,
 	reorderItems,
 	updateItem,
 	removeItem,
@@ -26,10 +23,7 @@ export const ItensList = ({
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ delay: 0.2 }}
-			className="space-y-6"
 		>
-			<AddItemForm onAdd={addItem} />
-
 			{activeList.items.length > 0 ? (
 				<div className="space-y-3">
 					<div className="flex items-center justify-between px-2">
