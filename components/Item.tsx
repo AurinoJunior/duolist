@@ -93,13 +93,7 @@ export function Item({
 			<button
 				type="button"
 				onClick={() => onDelete(item.id)}
-				className="
-          flex-shrink-0 w-8 h-8 rounded-full
-          flex items-center justify-center
-          opacity-0 group-hover:opacity-100
-          transition-all duration-200
-          hover:bg-red-50
-        "
+				className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center bg-red-50"
 			>
 				<Trash2 size={16} className="text-red-500" />
 			</button>
