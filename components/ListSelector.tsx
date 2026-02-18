@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Archive, ChevronDown, Plus, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { GroceryList } from "@/types";
 
 interface ListSelectorProps {
@@ -25,8 +25,26 @@ export function ListSelector({
 	const [isOpen, setIsOpen] = useState(false);
 	const [isCreating, setIsCreating] = useState(false);
 	const [newListName, setNewListName] = useState("");
+	const containerRef = useRef<HTMLDivElement>(null);
 
 	const activeList = lists.find((l) => l.id === activeListId);
+
+	useEffect(() => {
+		if (!isOpen) return;
+
+		const handleClickOutside = (event: MouseEvent) => {
+			if (
+				containerRef.current &&
+				!containerRef.current.contains(event.target as Node)
+			) {
+				setIsOpen(false);
+				setIsCreating(false);
+			}
+		};
+
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => document.removeEventListener("mousedown", handleClickOutside);
+	}, [isOpen]);
 
 	const handleCreate = () => {
 		if (newListName.trim()) {
@@ -37,7 +55,7 @@ export function ListSelector({
 	};
 
 	return (
-		<div className="relative">
+		<div className="relative" ref={containerRef}>
 			<button
 				type="button"
 				onClick={() => setIsOpen(!isOpen)}
