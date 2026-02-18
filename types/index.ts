@@ -2,7 +2,7 @@
  * Tipos principais da aplicação de lista de compras
  */
 
-export type Category =
+export type TCategory =
 	| "frutas"
 	| "verduras"
 	| "carnes"
@@ -13,26 +13,26 @@ export type Category =
 	| "higiene"
 	| "outros";
 
-export interface GroceryItem {
+export type TItem = {
 	id: string;
 	name: string;
-	category: Category;
+	category: TCategory;
 	completed: boolean;
 	order: number;
 	createdAt: string;
-}
+};
 
-export interface GroceryList {
+export type TList = {
 	id: string;
 	name: string;
-	items: GroceryItem[];
+	items: TItem[];
 	createdAt: string;
 	updatedAt: string;
 	isArchived: boolean;
-}
+};
 
 export interface CategoryConfig {
-	value: Category;
+	value: TCategory;
 	label: string;
 	color: string;
 	emoji: string;

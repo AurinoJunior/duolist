@@ -3,10 +3,10 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Archive, ChevronDown, Plus, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import type { GroceryList } from "@/types";
+import type { TList } from "@/types";
 
 interface ListSelectorProps {
-	lists: GroceryList[];
+	lists: TList[];
 	activeListId: string | null;
 	onSelect: (id: string) => void;
 	onCreate: (name: string) => void;
@@ -55,7 +55,13 @@ export function ListSelector({
 	};
 
 	return (
-		<div className="relative" ref={containerRef}>
+		<motion.div
+			initial={{ opacity: 0, y: 20 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{ delay: 0.1 }}
+			className="mb-6 relative"
+			ref={containerRef}
+		>
 			<button
 				type="button"
 				onClick={() => setIsOpen(!isOpen)}
@@ -206,6 +212,6 @@ export function ListSelector({
 					</motion.div>
 				)}
 			</AnimatePresence>
-		</div>
+		</motion.div>
 	);
 }

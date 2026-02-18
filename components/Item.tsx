@@ -5,7 +5,7 @@ import { GripVertical, Trash2 } from "lucide-react";
 import { CATEGORIES } from "@/lib/constants";
 import type { GroceryItem } from "@/types";
 
-interface GroceryItemComponentProps {
+interface ItemProps {
 	item: GroceryItem;
 	onToggle: (id: string) => void;
 	onDelete: (id: string) => void;
@@ -16,12 +16,12 @@ interface GroceryItemComponentProps {
  * Componente individual de item da lista
  * Exibe checkbox, nome, categoria e botão de deletar
  */
-export function GroceryItemComponent({
+export function Item({
 	item,
 	onToggle,
 	onDelete,
 	isDragging = false,
-}: GroceryItemComponentProps) {
+}: ItemProps) {
 	const category = CATEGORIES.find((c) => c.value === item.category);
 
 	return (
