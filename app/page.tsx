@@ -1,8 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Archive } from "lucide-react";
 import { AddItemForm } from "@/components/AddItemForm";
+import { ArchiveButton } from "@/components/ArchiveButton";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { ItensList } from "@/components/ItensList";
@@ -39,27 +38,8 @@ export default function Home() {
 					onArchive={archiveList}
 					onDelete={deleteList}
 				/>
-				{activeList?.id && (
-					<motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{ delay: 0.2 }}
-						className="flex justify-end"
-					>
-						<button
-							type="button"
-							onClick={() => archiveList(activeList.id)}
-							className="
-              flex items-center gap-2 px-4 py-2 rounded-xl
-              text-sm font-medium
-              bg-white border border-neutral-200
-              hover:bg-neutral-50 transition-colors
-            "
-						>
-							<Archive size={16} />
-							Concluir
-						</button>
-					</motion.div>
+				{activeList && (
+					<ArchiveButton activeList={activeList} archiveList={archiveList} />
 				)}
 				<AddItemForm onAdd={addItem} />
 				<ItensList

@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
 import { Plus, X } from "lucide-react";
 import { useState } from "react";
 import { CATEGORIES } from "@/lib/constants";
@@ -10,10 +9,6 @@ interface AddItemFormProps {
 	onAdd: (name: string, category: TCategory) => void;
 }
 
-/**
- * Formulário para adicionar novos itens
- * Inclui input de nome e seletor de categoria
- */
 export function AddItemForm({ onAdd }: AddItemFormProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [itemName, setItemName] = useState("");
