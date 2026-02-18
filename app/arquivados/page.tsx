@@ -1,9 +1,7 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { Archive, Trash2 } from "lucide-react";
+import { motion } from "framer-motion";
 import { ArchivedLists } from "@/components/ArchivedLists";
-import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Loading } from "@/components/Loading";
 import { useLists } from "@/hooks/useLists";
@@ -32,10 +30,7 @@ export default function Arquivados() {
 						: `${archivedLists.length} ${archivedLists.length === 1 ? "lista arquivada" : "listas arquivadas"}`}
 				</p>
 			</motion.div>
-
 			<ArchivedLists archivedLists={archivedLists} onDelete={deleteList} />
-
-			<Footer />
 		</>
 	);
 }

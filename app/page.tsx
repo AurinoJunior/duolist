@@ -2,7 +2,6 @@
 
 import { AddItemForm } from "@/components/AddItemForm";
 import { ArchiveButton } from "@/components/ArchiveButton";
-import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { ItensList } from "@/components/ItensList";
 import { ListSelector } from "@/components/ListSelector";
@@ -49,7 +48,6 @@ export default function Home() {
 					updateItem={updateItem}
 				/>
 			</div>
-			<Footer />
 		</div>
 	);
 }
