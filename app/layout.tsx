@@ -21,7 +21,11 @@ export default function RootLayout({
 	return (
 		<html lang="pt-BR">
 			<body className={`${dmSans.variable} font-sans antialiased`}>
-				{children}
+				<div className="min-h-screen bg-gradient-to-br from-orange-50 via-peach-50 to-cream-50">
+					<div className="max-w-2xl mx-auto px-4 py-8 relative min-h-dvh">
+						{children}
+					</div>
+				</div>
 			</body>
 		</html>
 	);
