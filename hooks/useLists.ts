@@ -1,15 +1,23 @@
 "use client";
 
-import { useGroceryStorage } from "./useGroceryStorage";
+import { useState } from "react";
+import type { TList } from "@/types";
 import { useItemActions } from "./useItemActions";
 import { useListActions } from "./useListActions";
+import { useListsStorage } from "./useListsStorage";
 
 /**
  * Fachada principal — compõe os hooks especializados e expõe a API pública
  */
-export function useGroceryLists() {
-	const { lists, setLists, activeListId, setActiveListId, isLoaded } =
-		useGroceryStorage();
+export function useLists() {
+	const [lists, setLists] = useState<TList[]>([]);
+	const [activeListId, setActiveListId] = useState<string | null>(null);
+
+	const { isLoaded } = useListsStorage({
+		lists,
+		setLists,
+		setActiveListId,
+	});
 
 	const listActions = useListActions(
 		lists,
@@ -21,9 +29,8 @@ export function useGroceryLists() {
 	const itemActions = useItemActions(activeListId, setLists);
 
 	return {
-		lists,
+		lists: lists.filter((l) => !l.isArchived),
 		activeList: lists.find((l) => l.id === activeListId) || null,
-		activeLists: lists.filter((l) => !l.isArchived),
 		archivedLists: lists.filter((l) => l.isArchived),
 		isLoaded,
 		...listActions,

@@ -1,15 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import { storage } from "@/lib/storage";
 import type { TList } from "@/types";
 
 /**
- * Gerencia o estado base da aplicação e sincronização com localStorage
+ * Gerencia a sincronização com localStorage
  */
-export function useGroceryStorage() {
-	const [lists, setLists] = useState<TList[]>([]);
-	const [activeListId, setActiveListId] = useState<string | null>(null);
+interface ListStorageProps {
+	lists: TList[];
+	setLists: Dispatch<SetStateAction<TList[]>>;
+	setActiveListId: Dispatch<SetStateAction<string | null>>;
+}
+
+export function useListsStorage({
+	lists,
+	setLists,
+	setActiveListId,
+}: ListStorageProps) {
 	const [isLoaded, setIsLoaded] = useState(false);
 
 	// Carrega dados do localStorage na inicialização
@@ -32,12 +40,12 @@ export function useGroceryStorage() {
 		setIsLoaded(true);
 	}, []);
 
-	// Persiste mudanças no localStorage
+	// Persiste mudanças no localStorage sempre que lists é alterado
 	useEffect(() => {
 		if (isLoaded) {
 			storage.saveLists(lists);
 		}
 	}, [lists, isLoaded]);
 
-	return { lists, setLists, activeListId, setActiveListId, isLoaded };
+	return { isLoaded };
 }

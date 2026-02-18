@@ -7,22 +7,22 @@ import { Header } from "@/components/Header";
 import { ItensList } from "@/components/ItensList";
 import { ListSelector } from "@/components/ListSelector";
 import { Loading } from "@/components/Loading";
-import { useGroceryLists } from "@/hooks/useGroceryLists";
+import { useLists } from "@/hooks/useLists";
 
 export default function Home() {
 	const {
+		lists,
 		addItem,
 		reorderItems,
 		updateItem,
 		removeItem,
 		activeList,
-		activeLists,
 		isLoaded,
 		createList,
 		selectList,
 		archiveList,
 		deleteList,
-	} = useGroceryLists();
+	} = useLists();
 
 	if (!isLoaded) return <Loading />;
 
@@ -31,7 +31,7 @@ export default function Home() {
 			<div className="max-w-2xl mx-auto px-4 py-8 relative h-dvh">
 				<Header />
 				<ListSelector
-					lists={activeLists}
+					lists={lists}
 					activeListId={activeList?.id || null}
 					onSelect={selectList}
 					onCreate={createList}

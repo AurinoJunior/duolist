@@ -1,4 +1,4 @@
-import type { GroceryList } from "@/types";
+import type { TList } from "@/types";
 import { STORAGE_KEYS } from "./constants";
 
 /**
@@ -10,7 +10,7 @@ export const storage = {
 	/**
 	 * Busca todas as listas salvas
 	 */
-	getLists: (): GroceryList[] => {
+	getLists: (): TList[] => {
 		if (typeof window === "undefined") return [];
 		try {
 			const data = localStorage.getItem(STORAGE_KEYS.LISTS);
@@ -24,7 +24,7 @@ export const storage = {
 	/**
 	 * Salva todas as listas
 	 */
-	saveLists: (lists: GroceryList[]): void => {
+	saveLists: (lists: TList[]): void => {
 		if (typeof window === "undefined") return;
 		try {
 			localStorage.setItem(STORAGE_KEYS.LISTS, JSON.stringify(lists));
@@ -66,7 +66,7 @@ export const listHelpers = {
 	/**
 	 * Cria uma nova lista vazia
 	 */
-	createList: (name: string): GroceryList => ({
+	createList: (name: string): TList => ({
 		id: crypto.randomUUID(),
 		name,
 		items: [],
@@ -78,7 +78,7 @@ export const listHelpers = {
 	/**
 	 * Atualiza timestamp de modificação
 	 */
-	touchList: (list: GroceryList): GroceryList => ({
+	touchList: (list: TList): TList => ({
 		...list,
 		updatedAt: new Date().toISOString(),
 	}),
