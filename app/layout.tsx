@@ -11,6 +11,9 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
 	title: "Lista de Compras",
 	description: "Organize suas compras de forma simples e eficiente",
+	icons: {
+		icon: "/favicon.ico",
+	},
 };
 
 export default function RootLayout({
