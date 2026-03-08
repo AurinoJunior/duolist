@@ -59,7 +59,7 @@ export function Item({
 			className={`
         group relative flex items-center gap-3 p-4 rounded-2xl
         bg-white border border-neutral-100
-        transition-all duration-200
+        transition-all duration-200 !cursor-default
         ${isDragging ? "shadow-lg scale-105 rotate-1" : "hover:shadow-md"}
         ${item.completed ? "opacity-60" : ""}
       `}
@@ -115,7 +115,7 @@ export function Item({
 							w-full text-base font-medium bg-orange-50
 							border border-orange-300 rounded-lg px-2 py-0.5
 							outline-none focus:ring-2 focus:ring-orange-300
-							text-neutral-800 cursor-text
+							text-neutral-800
 						"
 					/>
 				) : (
@@ -125,7 +125,7 @@ export function Item({
 							if (e.key === "Enter" || e.key === " ") startEditing();
 						}}
 						className={`
-							text-base font-medium transition-all duration-200 cursor-text select-none
+							text-base font-medium transition-all duration-200 select-none
 							${item.completed ? "line-through text-neutral-400" : "text-neutral-800"}
 						`}
 					>

@@ -68,7 +68,7 @@ export function AddItemForm({ onAdd }: AddItemFormProps) {
                   border border-neutral-200
                   focus:border-orange-400 focus:ring-2 focus:ring-orange-100
                   outline-none transition-all
-                  text-neutral-800 placeholder-neutral-400 cursor-text
+                  text-neutral-800 placeholder-neutral-400
                 "
 						/>
 					</div>
