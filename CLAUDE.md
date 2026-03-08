@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-A grocery list web app built with Next.js 14 (App Router), TypeScript, Tailwind CSS, and Framer Motion. All UI text is in Brazilian Portuguese. Data persists in localStorage. Design inspired by Headspace's minimalist aesthetic.
+**Duolist** — a grocery list web app built with Next.js 14 (App Router), TypeScript, Tailwind CSS, and Framer Motion. All UI text is in Brazilian Portuguese. Data persists in localStorage. Design inspired by Headspace's minimalist aesthetic.
 
 ## Commands
 
@@ -24,9 +24,9 @@ No test framework is configured.
 
 State is split across four hooks with clear separation of concerns:
 
-- **`hooks/useLists.ts`** — Facade hook. Composes all hooks, manages `lists[]` and `activeListId`, exposes public API with only non-archived lists to components.
+- **`hooks/useLists.ts`** — Facade hook. Composes all hooks, manages `lists[]` and `activeListId`, exposes public API with only non-archived lists to components. Also exposes `archivedLists` and `createListFromTemplate`.
 - **`hooks/useListsStorage.ts`** — Side effects only. Loads from localStorage on mount, saves on every `lists` change. Returns `isLoaded` boolean for hydration safety.
-- **`hooks/useListActions.ts`** — List CRUD: `selectList`, `createList`, `archiveList`, `deleteList`. Calls `storage.setActiveListId()` synchronously to avoid race conditions.
+- **`hooks/useListActions.ts`** — List CRUD: `selectList`, `createList`, `archiveList`, `deleteList`, `createListFromTemplate`. Calls `storage.setActiveListId()` synchronously to avoid race conditions.
 - **`hooks/useItemActions.ts`** — Item CRUD: `addItem`, `updateItem`, `removeItem`, `reorderItems`. All operations call `listHelpers.touchList()` to update timestamps.
 
 All hook functions use `useCallback`. All state updates are immutable (spread operators).
@@ -42,22 +42,28 @@ Storage keys defined in `lib/constants.ts` as `STORAGE_KEYS` (`as const`): `LIST
 
 This layer is designed to be swapped for API calls in a future backend migration.
 
+### Templates Layer (`lib/templates.ts`)
+
+Exports `TEMPLATES: TTemplate[]` — pre-built grocery lists users can use as starting points. Types `TTemplate` and `TTemplateItem` are defined here (not in `types/index.ts`). Templates are selected from `/modelos` page and create a new list via `createListFromTemplate`.
+
 ### Components
 
 All components are client-side (`'use client'`). Structure:
 
 ```
-app/page.tsx          # Orchestrator — composes all components, consumes useLists
-app/arquivados/page.tsx  # Archived lists page (stub, under development)
+app/page.tsx              # Orchestrator — composes all components, consumes useLists
+app/arquivados/page.tsx   # Archived lists page — fully implemented
+app/modelos/page.tsx      # Template selection page — fully implemented
 
 components/
-  Header.tsx          # Logo, archive link, tagline — stateless, animated
-  ListSelector.tsx    # Dropdown for list switching, creation, archive/delete
-  ItensList.tsx       # Drag-drop container (Reorder.Group), completion counter
-  AddItemForm.tsx     # Toggle form with item input + 3×3 category grid
-  Item.tsx            # Draggable item: checkbox, name, category, delete
-  Footer.tsx          # Attribution — stateless
-  Loading.tsx         # Full-screen spinner (shown while isLoaded is false)
+  Header.tsx              # Logo + nav icon — accepts optional backHref prop
+  ListSelector.tsx        # Dropdown for list switching, creation, archive/delete, link to /modelos
+  ItensList.tsx           # Drag-drop container (Reorder.Group), completion counter
+  AddItemForm.tsx         # Toggle form with item input + category grid
+  Item.tsx                # Draggable item: checkbox, name, category, delete
+  ArchiveButton.tsx       # "Concluir" button to archive the active list
+  ArchivedLists.tsx       # Renders archived list cards with delete action
+  Loading.tsx             # Full-screen spinner (shown while isLoaded is false)
 ```
 
 **Drag & drop**: Framer Motion's `Reorder.Group`/`Reorder.Item` on the Y-axis. Items sorted by `order` field. `reorderItems` updates all `order` values on drop.
@@ -65,25 +71,31 @@ components/
 ### Types (`types/index.ts`)
 
 ```typescript
-TCategory   // Union of 9 fixed strings
+TCategory   // Union of 7 fixed strings
 TItem       // { id, name, category, completed, order, createdAt }
 TList       // { id, name, items, createdAt, updatedAt, isArchived }
 CategoryConfig  // { value, label, color, emoji }
 ```
 
+Template types live in `lib/templates.ts`:
+```typescript
+TTemplateItem  // { name, category }
+TTemplate      // { id, name, description, emoji, items }
+```
+
 ### Categories (`lib/constants.ts`)
 
-9 fixed categories exported as `CATEGORIES: CategoryConfig[]`:
-`frutas, verduras, carnes, laticínios, grãos, bebidas, limpeza, higiene, outros`
+7 fixed categories exported as `CATEGORIES: CategoryConfig[]`:
+`cesta_basica, frutas, verduras, carnes, limpeza, higiene, outros`
 Each has a Portuguese label, hex color, and emoji.
 
 ## Conventions
 
 ### Naming
-- **Types**: `T` prefix — `TList`, `TItem`, `TCategory`
+- **Types**: `T` prefix — `TList`, `TItem`, `TCategory`, `TTemplate`
 - **Components**: PascalCase, filename matches export exactly
 - **Hooks**: `use` prefix, named by responsibility (`useListActions`, `useItemActions`)
-- **Props interfaces**: `{ComponentName}Props`
+- **Props interfaces**: inconsistency exists — older components use `{ComponentName}Props`, newer ones use `I{ComponentName}Props`. Prefer `I` prefix for new components.
 - **Constants**: `UPPER_SNAKE_CASE`, use `as const` for key maps
 - **State booleans**: `is` prefix — `isLoaded`, `isOpen`, `isCreating`
 - **Action functions**: verb-first — `createList`, `addItem`, `removeItem`
@@ -116,6 +128,8 @@ Each has a Portuguese label, hex color, and emoji.
 Mount → useListsStorage loads localStorage → sets lists + activeListId → isLoaded = true
 User action → useListActions/useItemActions mutates lists state
 lists state change → useListsStorage effect → storage.saveLists() → localStorage
+
+Template flow: /modelos → createListFromTemplate(template) → new TList created → redirect to /
 ```
 
 ## Key Files at a Glance
@@ -124,19 +138,23 @@ lists state change → useListsStorage effect → storage.saveLists() → localS
 |------|---------|
 | `hooks/useLists.ts` | Public API facade for components |
 | `hooks/useListsStorage.ts` | localStorage sync (load + persist) |
-| `hooks/useListActions.ts` | List CRUD (select, create, archive, delete) |
+| `hooks/useListActions.ts` | List CRUD (select, create, archive, delete, from template) |
 | `hooks/useItemActions.ts` | Item CRUD (add, update, remove, reorder) |
 | `lib/storage.ts` | localStorage abstraction + list data factories |
 | `lib/constants.ts` | CATEGORIES array + STORAGE_KEYS |
-| `types/index.ts` | All domain types |
+| `lib/templates.ts` | Pre-built template definitions + TTemplate types |
+| `types/index.ts` | Core domain types |
 | `app/page.tsx` | Home page orchestrator |
-| `components/ListSelector.tsx` | Dropdown with click-outside, keyboard support |
+| `app/arquivados/page.tsx` | Archived lists page |
+| `app/modelos/page.tsx` | Template selection page |
+| `components/ListSelector.tsx` | Dropdown with click-outside, link to /modelos |
 | `components/ItensList.tsx` | Reorder.Group container + empty state |
-| `components/AddItemForm.tsx` | Toggle form + 3×3 category grid |
+| `components/AddItemForm.tsx` | Toggle form + category grid |
 | `components/Item.tsx` | Draggable item with animated checkbox |
+| `components/ArchivedLists.tsx` | Archived list cards with delete |
+| `components/ArchiveButton.tsx` | "Concluir" button to archive active list |
 
-## Known Gaps / In Progress
+## Known Gaps
 
-- `app/arquivados/page.tsx` is a stub — archived lists display not implemented
 - No test framework configured
 - No backend/API integration (storage layer ready to be swapped)

@@ -1,17 +1,25 @@
-# 🛒 Lista de Compras
+# 🛒 Duolist
 
 Uma aplicação moderna e minimalista para gerenciar suas listas de compras, inspirada no design limpo do Headspace.
 
+## 🛠️ Stack
+
+- **Next.js 14** (App Router)
+- **TypeScript**
+- **Tailwind CSS**
+- **Framer Motion**
+- **Biome** (linter + formatter)
+
 ### Pré-requisitos
 
-- Node.js 18+ instalado
+- Node.js 18+
 - yarn
 
 ### Instalação
 
 ```bash
 # 1. Navegue até a pasta do projeto
-cd supermarket-list
+cd duolist
 
 # 2. Instale as dependências
 yarn
@@ -33,15 +41,22 @@ yarn build
 yarn start
 ```
 
+### Outros comandos
+
+```bash
+yarn lint       # Biome
+yarn typecheck  # TypeScript
+```
+
 ## 🏗️ Estrutura do Projeto
 
 ```
-grocery-list/
-├── app/                  # Paginas da aplicação
-├── components/           # Componente compartilhados e reutilizados na aplicação
-├── hooks/                # Hooks utilitarios e compartilhados
-├── lib/                  # Configuração, Contantes e utilitários relacionados a libs externas
-├── types/                # Tipagem da aplicação
+duolist/
+├── app/           # Páginas da aplicação
+├── components/    # Componentes compartilhados
+├── hooks/         # Hooks de estado e lógica
+├── lib/           # Utilitários, constantes e camada de storage
+├── types/         # Tipagem da aplicação
 ```
 
 ## 📄 Licença
