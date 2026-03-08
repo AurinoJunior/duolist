@@ -1,7 +1,14 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Archive, ChevronDown, Plus, Trash2 } from "lucide-react";
+import {
+	Archive,
+	ChevronDown,
+	LayoutTemplate,
+	Plus,
+	Trash2,
+} from "lucide-react";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { TList } from "@/types";
 
@@ -162,7 +169,7 @@ export function ListSelector({
 							)}
 						</div>
 
-						<div className="border-t border-neutral-200 p-3">
+						<div className="border-t border-neutral-200 p-3 flex flex-col gap-2">
 							{!isCreating ? (
 								<button
 									type="button"
@@ -190,7 +197,7 @@ export function ListSelector({
                       flex-1 px-3 py-2 rounded-lg
                       border border-neutral-200
                       focus:border-orange-400 focus:ring-2 focus:ring-orange-100
-                      outline-none text-sm
+                      outline-none text-sm text-neutral-800 placeholder-neutral-400
                     "
 									/>
 									<button
@@ -208,6 +215,21 @@ export function ListSelector({
 									</button>
 								</div>
 							)}
+							<Link href="/modelos" onClick={() => setIsOpen(false)}>
+								<button
+									type="button"
+									className="
+										w-full py-2.5 px-4 rounded-xl
+										bg-cream-100 border border-neutral-200
+										text-neutral-600 font-medium text-sm
+										flex items-center justify-center gap-2
+										hover:bg-cream-200 transition-all duration-200
+									"
+								>
+									<LayoutTemplate size={16} />
+									Escolha um modelo
+								</button>
+							</Link>
 						</div>
 					</motion.div>
 				)}

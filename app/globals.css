@@ -47,6 +47,8 @@ input,
 textarea,
 select {
     font-size: 16px;
+    color: #262626;
+    caret-color: #262626;
 }
 
 /* Remove autofill background */

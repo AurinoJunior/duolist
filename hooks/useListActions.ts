@@ -3,7 +3,8 @@
 import type { Dispatch, SetStateAction } from "react";
 import { useCallback } from "react";
 import { listHelpers, storage } from "@/lib/storage";
-import type { TList } from "@/types";
+import type { TTemplate } from "@/lib/templates";
+import type { TItem, TList } from "@/types";
 
 /**
  * Ações de CRUD para listas de compras
@@ -69,5 +70,31 @@ export function useListActions(
 		[activeListId, lists, selectList, setLists, setActiveListId],
 	);
 
-	return { createList, selectList, archiveList, deleteList };
+	const createListFromTemplate = useCallback(
+		(template: TTemplate) => {
+			const newList = listHelpers.createList(template.name);
+			const items: TItem[] = template.items.map((item, index) => ({
+				id: crypto.randomUUID(),
+				name: item.name,
+				category: item.category,
+				completed: false,
+				order: index,
+				createdAt: new Date().toISOString(),
+			}));
+			const listWithItems: TList = { ...newList, items };
+			setLists((prev) => [...prev, listWithItems]);
+			setActiveListId(listWithItems.id);
+			storage.setActiveListId(listWithItems.id);
+			return listWithItems;
+		},
+		[setLists, setActiveListId],
+	);
+
+	return {
+		createList,
+		createListFromTemplate,
+		selectList,
+		archiveList,
+		deleteList,
+	};
 }

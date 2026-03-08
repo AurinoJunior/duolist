@@ -115,7 +115,7 @@ export function Item({
 							w-full text-base font-medium bg-orange-50
 							border border-orange-300 rounded-lg px-2 py-0.5
 							outline-none focus:ring-2 focus:ring-orange-300
-							text-neutral-800
+							text-neutral-800 cursor-text
 						"
 					/>
 				) : (
