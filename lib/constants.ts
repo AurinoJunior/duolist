@@ -5,6 +5,12 @@ import type { CategoryConfig } from "@/types";
  * Cada categoria tem cor e emoji únicos para fácil identificação visual
  */
 export const CATEGORIES: CategoryConfig[] = [
+	{
+		value: "cesta_basica",
+		label: "Cesta básica",
+		color: "#FFDDD2",
+		emoji: "🛍️",
+	},
 	{ value: "frutas", label: "Frutas", color: "#FFB88C", emoji: "🍎" },
 	{ value: "verduras", label: "Verduras", color: "#98D8C8", emoji: "🥬" },
 	{ value: "carnes", label: "Carnes", color: "#FF8C42", emoji: "🥩" },

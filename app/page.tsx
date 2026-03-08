@@ -40,7 +40,7 @@ export default function Home() {
 				{activeList && (
 					<ArchiveButton activeList={activeList} archiveList={archiveList} />
 				)}
-				<AddItemForm onAdd={addItem} />
+				{activeList && <AddItemForm onAdd={addItem} />}
 				<ItensList
 					activeList={activeList}
 					removeItem={removeItem}

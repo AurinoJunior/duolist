@@ -1,10 +1,8 @@
 export type TCategory =
+	| "cesta_basica"
 	| "frutas"
 	| "verduras"
 	| "carnes"
-	| "laticínios"
-	| "grãos"
-	| "bebidas"
 	| "limpeza"
 	| "higiene"
 	| "outros";
