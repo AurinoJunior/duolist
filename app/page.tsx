@@ -44,7 +44,6 @@ export default function Home() {
 
 	const handleFabClick = useCallback(() => {
 		setIsFormOpen(true);
-		formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
 	}, []);
 
 	if (!isLoaded) return <Loading />;
