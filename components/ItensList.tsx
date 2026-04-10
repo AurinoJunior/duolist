@@ -1,12 +1,11 @@
-import { AnimatePresence, motion, Reorder } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { CATEGORIES } from "@/lib/constants";
-import type { TItem, TList } from "@/types";
+import type { TList } from "@/types";
 import { Item } from "./Item";
 
 interface ItensListProps {
 	activeList: TList | null;
-	reorderItems: (reorderedItems: TItem[]) => void;
-	updateItem: (itemId: string, updates: Partial<TItem>) => void;
+	updateItem: (itemId: string, updates: Partial<import("@/types").TItem>) => void;
 	removeItem: (itemId: string) => void;
 }
 
@@ -15,7 +14,6 @@ const CATEGORY_MAP = Object.fromEntries(CATEGORIES.map((c) => [c.value, c]));
 export const ItensList = ({
 	activeList,
 	updateItem,
-	reorderItems,
 	removeItem,
 }: ItensListProps) => {
 	if (!activeList) return null;
@@ -27,15 +25,6 @@ export const ItensList = ({
 		config: CATEGORY_MAP[category],
 		items: activeList.items.filter((i) => i.category === category),
 	}));
-
-	const handleGroupReorder = (category: string, reordered: TItem[]) => {
-		const merged = categories.flatMap((c) =>
-			c === category
-				? reordered
-				: activeList.items.filter((i) => i.category === c),
-		);
-		reorderItems(merged);
-	};
 
 	return (
 		<motion.div
@@ -64,29 +53,21 @@ export const ItensList = ({
 									</h3>
 								</div>
 
-								<Reorder.Group
-									axis="y"
-									values={items}
-									onReorder={(reordered) =>
-										handleGroupReorder(category, reordered)
-									}
-									className="space-y-2"
-								>
+								<div className="space-y-2">
 									<AnimatePresence>
 										{items.map((item) => (
-											<Reorder.Item key={item.id} value={item} className="">
-												<Item
-													item={item}
-													onToggle={(id) =>
-														updateItem(id, { completed: !item.completed })
-													}
-													onDelete={removeItem}
-													onRename={(id, name) => updateItem(id, { name })}
-												/>
-											</Reorder.Item>
+											<Item
+												key={item.id}
+												item={item}
+												onToggle={(id) =>
+													updateItem(id, { completed: !item.completed })
+												}
+												onDelete={removeItem}
+												onRename={(id, name) => updateItem(id, { name })}
+											/>
 										))}
 									</AnimatePresence>
-								</Reorder.Group>
+								</div>
 							</div>
 						))}
 					</div>

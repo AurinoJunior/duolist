@@ -1,5 +1,8 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
+import { Plus } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AddItemForm } from "@/components/AddItemForm";
 import { ArchiveButton } from "@/components/ArchiveButton";
 import { Header } from "@/components/Header";
@@ -12,7 +15,6 @@ export default function Home() {
 	const {
 		lists,
 		addItem,
-		reorderItems,
 		updateItem,
 		removeItem,
 		activeList,
@@ -22,6 +24,28 @@ export default function Home() {
 		archiveList,
 		deleteList,
 	} = useLists();
+
+	const [isFormOpen, setIsFormOpen] = useState(false);
+	const [showFab, setShowFab] = useState(false);
+	const formRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const el = formRef.current;
+		if (!el) return;
+
+		const observer = new IntersectionObserver(
+			([entry]) => setShowFab(!entry.isIntersecting),
+			{ threshold: 0, rootMargin: "0px" },
+		);
+
+		observer.observe(el);
+		return () => observer.disconnect();
+	}, [isLoaded]);
+
+	const handleFabClick = useCallback(() => {
+		setIsFormOpen(true);
+		formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+	}, []);
 
 	if (!isLoaded) return <Loading />;
 
@@ -40,14 +64,47 @@ export default function Home() {
 				{activeList && (
 					<ArchiveButton activeList={activeList} archiveList={archiveList} />
 				)}
-				{activeList && <AddItemForm onAdd={addItem} />}
+				{activeList && (
+					<div ref={formRef}>
+						<AddItemForm
+							onAdd={addItem}
+							isOpen={isFormOpen}
+							onOpenChange={setIsFormOpen}
+						/>
+					</div>
+				)}
 				<ItensList
 					activeList={activeList}
 					removeItem={removeItem}
-					reorderItems={reorderItems}
 					updateItem={updateItem}
 				/>
 			</div>
+
+			{/* FAB flutuante */}
+			<AnimatePresence>
+				{activeList && showFab && !isFormOpen && (
+					<motion.button
+						type="button"
+						key="fab"
+						initial={{ opacity: 0, scale: 0.8, y: 16 }}
+						animate={{ opacity: 1, scale: 1, y: 0 }}
+						exit={{ opacity: 0, scale: 0.8, y: 16 }}
+						transition={{ duration: 0.2 }}
+						onClick={handleFabClick}
+						className="
+							fixed bottom-6 right-6 z-50
+							w-14 h-14 rounded-full
+							bg-gradient-to-br from-orange-400 to-peach-400
+							text-white shadow-xl
+							flex items-center justify-center
+							hover:scale-110 hover:shadow-2xl
+							transition-transform duration-200
+						"
+					>
+						<Plus size={26} />
+					</motion.button>
+				)}
+			</AnimatePresence>
 		</div>
 	);
 }

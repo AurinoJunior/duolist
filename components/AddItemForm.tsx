@@ -7,10 +7,11 @@ import type { TCategory } from "@/types";
 
 interface AddItemFormProps {
 	onAdd: (name: string, category: TCategory) => void;
+	isOpen: boolean;
+	onOpenChange: (open: boolean) => void;
 }
 
-export function AddItemForm({ onAdd }: AddItemFormProps) {
-	const [isOpen, setIsOpen] = useState(false);
+export function AddItemForm({ onAdd, isOpen, onOpenChange }: AddItemFormProps) {
 	const [itemName, setItemName] = useState("");
 	const [selectedCategory, setSelectedCategory] = useState<TCategory>("outros");
 
@@ -20,7 +21,7 @@ export function AddItemForm({ onAdd }: AddItemFormProps) {
 			onAdd(itemName.trim(), selectedCategory);
 			setItemName("");
 			setSelectedCategory("outros");
-			setIsOpen(false);
+			onOpenChange(false);
 		}
 	};
 
@@ -29,7 +30,7 @@ export function AddItemForm({ onAdd }: AddItemFormProps) {
 			{!isOpen && (
 				<button
 					type="button"
-					onClick={() => setIsOpen(true)}
+					onClick={() => onOpenChange(true)}
 					className="
             w-full py-4 px-6 rounded-2xl
             bg-gradient-to-r from-orange-400 to-peach-400
@@ -113,7 +114,7 @@ export function AddItemForm({ onAdd }: AddItemFormProps) {
 						<button
 							type="button"
 							onClick={() => {
-								setIsOpen(false);
+								onOpenChange(false);
 								setItemName("");
 								setSelectedCategory("outros");
 							}}

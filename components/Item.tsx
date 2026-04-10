@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { GripVertical, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { CATEGORIES } from "@/lib/constants";
 import type { TItem } from "@/types";
@@ -11,7 +11,6 @@ interface ItemProps {
 	onToggle: (id: string) => void;
 	onDelete: (id: string) => void;
 	onRename: (id: string, name: string) => void;
-	isDragging?: boolean;
 }
 
 /**
@@ -23,7 +22,6 @@ export function Item({
 	onToggle,
 	onDelete,
 	onRename,
-	isDragging = false,
 }: ItemProps) {
 	const category = CATEGORIES.find((c) => c.value === item.category);
 	const [isEditing, setIsEditing] = useState(false);
@@ -60,15 +58,10 @@ export function Item({
         group relative flex items-center gap-3 p-4 rounded-2xl
         bg-white border border-neutral-100
         transition-all duration-200 !cursor-default
-        ${isDragging ? "shadow-lg scale-105 rotate-1" : "hover:shadow-md"}
+        hover:shadow-md
         ${item.completed ? "opacity-60" : ""}
       `}
 		>
-			{/* Drag Handle */}
-			<div className="cursor-grab active:cursor-grabbing opacity-40 group-hover:opacity-100 transition-opacity">
-				<GripVertical size={20} className="text-neutral-400" />
-			</div>
-
 			{/* Checkbox */}
 			<button
 				type="button"
