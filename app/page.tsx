@@ -85,9 +85,9 @@ export default function Home() {
 					<motion.button
 						type="button"
 						key="fab"
-						initial={{ opacity: 0, scale: 0.8, y: 16 }}
-						animate={{ opacity: 1, scale: 1, y: 0 }}
-						exit={{ opacity: 0, scale: 0.8, y: 16 }}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
 						transition={{ duration: 0.2 }}
 						onClick={handleFabClick}
 						className="
