@@ -50,7 +50,6 @@ export function Item({
 
 	return (
 		<motion.div
-			layout
 			initial={{ opacity: 0, y: -10 }}
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, x: -100 }}
@@ -58,7 +57,7 @@ export function Item({
         group relative flex items-center gap-3 p-4 rounded-2xl
         bg-white border border-neutral-100
         transition-all duration-200 !cursor-default
-        hover:shadow-md
+
         ${item.completed ? "opacity-60" : ""}
       `}
 		>

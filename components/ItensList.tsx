@@ -20,11 +20,14 @@ export const ItensList = ({
 
 	const categories = [...new Set(activeList.items.map((i) => i.category))];
 
-	const groups = categories.map((category) => ({
-		category,
-		config: CATEGORY_MAP[category],
-		items: activeList.items.filter((i) => i.category === category),
-	}));
+	const groups = categories.map((category) => {
+		const items = activeList.items.filter((i) => i.category === category);
+		return {
+			category,
+			config: CATEGORY_MAP[category],
+			items: [...items].sort((a, b) => Number(a.completed) - Number(b.completed)),
+		};
+	});
 
 	return (
 		<motion.div

@@ -26,8 +26,9 @@ export const Header = ({ backHref }: HeaderProps) => {
 					</Link>
 				) : (
 					<Link href="/arquivados">
-						<div className="w-8 h-8 bg-orange-400 rounded-xl flex items-center justify-center">
-							<Archive size={18} className="text-orange-100" />
+						<div className="h-8 px-3 bg-orange-400 rounded-xl flex items-center gap-1.5">
+							<Archive size={16} className="text-orange-100" />
+							<span className="text-orange-100 text-sm font-medium">Arquivados</span>
 						</div>
 					</Link>
 				)}
