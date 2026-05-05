@@ -89,7 +89,7 @@ export function ListSelector({
 				className={`
           absolute top-full left-0 right-0 mt-2
           bg-white rounded-2xl border border-neutral-200
-          shadow-xl overflow-hidden z-50
+          shadow-xl overflow-hidden z-[60]
           transition-all duration-200 origin-top
           ${
 						isOpen
