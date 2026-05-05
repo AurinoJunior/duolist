@@ -1,4 +1,3 @@
-import { AnimatePresence, motion } from "framer-motion";
 import { Archive, Trash2 } from "lucide-react";
 import type { TList } from "@/types";
 
@@ -12,23 +11,17 @@ export const ArchivedLists = ({
 	onDelete,
 }: IArchivedListsProps) => {
 	return (
-		<AnimatePresence mode="popLayout">
+		<>
 			{archivedLists.length === 0 ? (
-				<motion.div
-					key="empty"
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					exit={{ opacity: 0, y: -20 }}
-					className="flex flex-col items-center justify-center py-20 text-neutral-400"
-				>
+				<div className="anim-fade-in-up flex flex-col items-center justify-center py-20 text-neutral-400">
 					<Archive size={48} className="mb-4 opacity-30" />
 					<p className="text-base">Nenhuma lista por aqui ainda.</p>
 					<p className="text-sm mt-1">
 						Conclua uma lista na tela principal para arquivá-la.
 					</p>
-				</motion.div>
+				</div>
 			) : (
-				<motion.ul className="flex flex-col gap-3 pb-16">
+				<ul className="flex flex-col gap-3 pb-16">
 					{archivedLists.map((list, index) => {
 						const formattedDate = new Intl.DateTimeFormat("pt-BR", {
 							day: "2-digit",
@@ -37,14 +30,10 @@ export const ArchivedLists = ({
 						}).format(new Date(list.updatedAt));
 
 						return (
-							<motion.li
+							<li
 								key={list.id}
-								initial={{ opacity: 0, y: 20 }}
-								animate={{ opacity: 1, y: 0 }}
-								exit={{ opacity: 0, x: -100 }}
-								transition={{ delay: index * 0.05 }}
-								layout
-								className="bg-white rounded-2xl shadow-md px-5 py-4 flex items-center justify-between gap-4"
+								className="anim-fade-in-up bg-white rounded-2xl shadow-md px-5 py-4 flex items-center justify-between gap-4"
+								style={{ animationDelay: `${index * 0.05}s` }}
 							>
 								<div className="flex-1 min-w-0">
 									<p className="font-semibold text-neutral-800 truncate">
@@ -69,11 +58,11 @@ export const ArchivedLists = ({
 								>
 									<Trash2 size={18} />
 								</button>
-							</motion.li>
+							</li>
 						);
 					})}
-				</motion.ul>
+				</ul>
 			)}
-		</AnimatePresence>
+		</>
 	);
 };

@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { ArchivedLists } from "@/components/ArchivedLists";
 import { Header } from "@/components/Header";
 import { Loading } from "@/components/Loading";
@@ -14,12 +13,7 @@ export default function Arquivados() {
 	return (
 		<>
 			<Header backHref="/" />
-			<motion.div
-				initial={{ opacity: 0, y: 20 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ delay: 0.1 }}
-				className="mb-6"
-			>
+			<div className="mb-6 anim-fade-in-up anim-delay-1">
 				<h2 className="text-xl font-semibold text-neutral-800 mb-1">
 					Listas arquivadas
 				</h2>
@@ -29,7 +23,7 @@ export default function Arquivados() {
 						? "Nenhuma lista arquivada ainda."
 						: `${archivedLists.length} ${archivedLists.length === 1 ? "lista arquivada" : "listas arquivadas"}`}
 				</p>
-			</motion.div>
+			</div>
 			<ArchivedLists archivedLists={archivedLists} onDelete={deleteList} />
 		</>
 	);

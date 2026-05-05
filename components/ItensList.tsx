@@ -1,11 +1,13 @@
-import { AnimatePresence, motion } from "framer-motion";
 import { CATEGORIES } from "@/lib/constants";
 import type { TList } from "@/types";
 import { Item } from "./Item";
 
 interface ItensListProps {
 	activeList: TList | null;
-	updateItem: (itemId: string, updates: Partial<import("@/types").TItem>) => void;
+	updateItem: (
+		itemId: string,
+		updates: Partial<import("@/types").TItem>,
+	) => void;
 	removeItem: (itemId: string) => void;
 }
 
@@ -25,16 +27,14 @@ export const ItensList = ({
 		return {
 			category,
 			config: CATEGORY_MAP[category],
-			items: [...items].sort((a, b) => Number(a.completed) - Number(b.completed)),
+			items: [...items].sort(
+				(a, b) => Number(a.completed) - Number(b.completed),
+			),
 		};
 	});
 
 	return (
-		<motion.div
-			initial={{ opacity: 0, y: 20 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{ delay: 0.2 }}
-		>
+		<div className="anim-fade-in-up anim-delay-2">
 			{activeList.items.length > 0 ? (
 				<div className="space-y-5">
 					<div className="flex items-center justify-between px-2">
@@ -57,29 +57,26 @@ export const ItensList = ({
 								</div>
 
 								<div className="space-y-2">
-									<AnimatePresence>
-										{items.map((item) => (
-											<Item
-												key={item.id}
-												item={item}
-												onToggle={(id) =>
-													updateItem(id, { completed: !item.completed })
-												}
-												onDelete={removeItem}
-												onRename={(id, name) => updateItem(id, { name })}
-											/>
-										))}
-									</AnimatePresence>
+									{items.map((item) => (
+										<Item
+											key={item.id}
+											item={item}
+											onToggle={(id) =>
+												updateItem(id, { completed: !item.completed })
+											}
+											onDelete={removeItem}
+											onRename={(id, name) => updateItem(id, { name })}
+										/>
+									))}
 								</div>
 							</div>
 						))}
 					</div>
 				</div>
 			) : (
-				<motion.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
+				<div
 					className="
+						anim-fade-in
 						text-center py-16 px-6
 						bg-white rounded-2xl border-2 border-dashed border-neutral-200
 					"
@@ -88,8 +85,8 @@ export const ItensList = ({
 					<p className="text-neutral-400 text-sm">
 						Adicione seu primeiro item para começar
 					</p>
-				</motion.div>
+				</div>
 			)}
-		</motion.div>
+		</div>
 	);
 };

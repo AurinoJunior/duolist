@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AddItemForm } from "@/components/AddItemForm";
@@ -80,30 +79,28 @@ export default function Home() {
 			</div>
 
 			{/* FAB flutuante */}
-			<AnimatePresence>
-				{activeList && showFab && !isFormOpen && (
-					<motion.button
-						type="button"
-						key="fab"
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						transition={{ duration: 0.2 }}
-						onClick={handleFabClick}
-						className="
-							fixed bottom-6 right-6 z-50
-							w-14 h-14 rounded-full
-							bg-gradient-to-br from-orange-400 to-peach-400
-							text-white shadow-xl
-							flex items-center justify-center
-							hover:scale-110 hover:shadow-2xl
-							transition-transform duration-200
-						"
-					>
-						<Plus size={26} />
-					</motion.button>
-				)}
-			</AnimatePresence>
+			{activeList && (
+				<button
+					type="button"
+					onClick={handleFabClick}
+					className={`
+						fixed bottom-6 right-6 z-50
+						w-14 h-14 rounded-full
+						bg-gradient-to-br from-orange-400 to-peach-400
+						text-white shadow-xl
+						flex items-center justify-center
+						hover:scale-110 hover:shadow-2xl
+						transition-all duration-200
+						${
+							showFab && !isFormOpen
+								? "opacity-100 pointer-events-auto"
+								: "opacity-0 pointer-events-none"
+						}
+					`}
+				>
+					<Plus size={26} />
+				</button>
+			)}
 		</div>
 	);
 }

@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Archive, ArrowLeft, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 
@@ -8,11 +7,7 @@ interface HeaderProps {
 
 export const Header = ({ backHref }: HeaderProps) => {
 	return (
-		<motion.header
-			initial={{ opacity: 0, y: -20 }}
-			animate={{ opacity: 1, y: 0 }}
-			className="mb-8"
-		>
+		<header className="mb-8 anim-fade-in-down">
 			<div className="flex justify-between items-center mb-4">
 				<div className="flex items-center gap-3">
 					<ShoppingBag size={32} className="text-orange-400" />
@@ -28,7 +23,9 @@ export const Header = ({ backHref }: HeaderProps) => {
 					<Link href="/arquivados">
 						<div className="h-8 px-3 bg-orange-400 rounded-xl flex items-center gap-1.5">
 							<Archive size={16} className="text-orange-100" />
-							<span className="text-orange-100 text-sm font-medium">Arquivados</span>
+							<span className="text-orange-100 text-sm font-medium">
+								Arquivados
+							</span>
 						</div>
 					</Link>
 				)}
@@ -36,6 +33,6 @@ export const Header = ({ backHref }: HeaderProps) => {
 			<p className="text-neutral-600">
 				Organizando as compras, pra não voltar só com besteira.
 			</p>
-		</motion.header>
+		</header>
 	);
 };

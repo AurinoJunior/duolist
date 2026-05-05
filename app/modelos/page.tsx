@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useLists } from "@/hooks/useLists";
 import { TEMPLATES } from "@/lib/templates";
@@ -18,36 +17,30 @@ export default function ModelosPage() {
 
 	return (
 		<main className="min-h-screen bg-cream-50 px-4 py-8 max-w-lg mx-auto">
-			<motion.div
-				initial={{ opacity: 0, y: -20 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.3 }}
-				className="mb-8"
-			>
+			<div className="mb-8 anim-fade-in-down">
 				<h1 className="text-2xl font-bold text-neutral-800">
 					Escolha um modelo
 				</h1>
 				<p className="text-neutral-500 text-sm mt-1">
 					Comece com uma lista pré-preenchida
 				</p>
-			</motion.div>
+			</div>
 
 			<div className="grid grid-cols-2 gap-3">
 				{TEMPLATES.map((template, index) => (
-					<motion.button
+					<button
 						key={template.id}
 						type="button"
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: index * 0.07 }}
-						onClick={() => handleSelect(template.id)}
 						className="
+							anim-fade-in-up
 							text-left p-4 rounded-2xl
 							bg-white border border-neutral-200
 							hover:shadow-md hover:scale-[1.02]
 							transition-all duration-200
 							flex flex-col gap-2
 						"
+						style={{ animationDelay: `${index * 0.07}s` }}
+						onClick={() => handleSelect(template.id)}
 					>
 						<span className="text-3xl">{template.emoji}</span>
 						<div>
@@ -61,7 +54,7 @@ export default function ModelosPage() {
 						<p className="text-xs font-medium text-orange-400">
 							{template.items.length} itens
 						</p>
-					</motion.button>
+					</button>
 				))}
 			</div>
 		</main>

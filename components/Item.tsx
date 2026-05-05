@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { CATEGORIES } from "@/lib/constants";
@@ -13,16 +12,7 @@ interface ItemProps {
 	onRename: (id: string, name: string) => void;
 }
 
-/**
- * Componente individual de item da lista
- * Exibe checkbox, nome e botão de deletar
- */
-export function Item({
-	item,
-	onToggle,
-	onDelete,
-	onRename,
-}: ItemProps) {
+export function Item({ item, onToggle, onDelete, onRename }: ItemProps) {
 	const category = CATEGORIES.find((c) => c.value === item.category);
 	const [isEditing, setIsEditing] = useState(false);
 	const [draft, setDraft] = useState(item.name);
@@ -49,11 +39,9 @@ export function Item({
 	};
 
 	return (
-		<motion.div
-			initial={{ opacity: 0, y: -10 }}
-			animate={{ opacity: 1, y: 0 }}
-			exit={{ opacity: 0, x: -100 }}
+		<div
 			className={`
+        anim-fade-in-up
         group relative flex items-center gap-3 p-4 rounded-2xl
         bg-white border border-neutral-100
         transition-all duration-200 !cursor-default
@@ -72,13 +60,13 @@ export function Item({
 				}}
 			>
 				{item.completed && (
-					<motion.svg
-						initial={{ scale: 0 }}
-						animate={{ scale: 1 }}
+					<svg
+						className="anim-scale-in"
 						width="16"
 						height="16"
 						viewBox="0 0 16 16"
 						fill="none"
+						aria-hidden="true"
 					>
 						<path
 							d="M3 8L6.5 11.5L13 5"
@@ -87,7 +75,7 @@ export function Item({
 							strokeLinecap="round"
 							strokeLinejoin="round"
 						/>
-					</motion.svg>
+					</svg>
 				)}
 			</button>
 
@@ -134,6 +122,6 @@ export function Item({
 			>
 				<Trash2 size={16} className="text-red-500" />
 			</button>
-		</motion.div>
+		</div>
 	);
 }

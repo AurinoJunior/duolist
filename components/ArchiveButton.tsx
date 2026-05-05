@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Archive } from "lucide-react";
 import type { TList } from "@/types";
 
@@ -12,12 +11,7 @@ export const ArchiveButton = ({
 	archiveList,
 }: IArchiveButtonProps) => {
 	return (
-		<motion.div
-			initial={{ opacity: 0 }}
-			animate={{ opacity: 1 }}
-			transition={{ delay: 0.2 }}
-			className="flex justify-end"
-		>
+		<div className="flex justify-end anim-fade-in anim-delay-2">
 			<button
 				type="button"
 				onClick={() => archiveList(activeList.id)}
@@ -31,6 +25,6 @@ export const ArchiveButton = ({
 				<Archive size={16} />
 				Concluir
 			</button>
-		</motion.div>
+		</div>
 	);
 };

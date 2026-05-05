@@ -57,3 +57,35 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
     -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
+
+/* Animation keyframes */
+@keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in-down {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scale-in {
+    from { transform: scale(0); }
+    to   { transform: scale(1); }
+}
+@keyframes slide-in-up {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+}
+
+/* Animation utilities (fill-mode: both respeita delay sem piscar) */
+.anim-fade-in      { animation: fade-in      0.25s ease-out both; }
+.anim-fade-in-up   { animation: fade-in-up   0.3s  ease-out both; }
+.anim-fade-in-down { animation: fade-in-down 0.3s  ease-out both; }
+.anim-scale-in     { animation: scale-in     0.15s ease-out both; }
+.anim-slide-in-up  { animation: slide-in-up  0.3s  cubic-bezier(0.32, 0.72, 0, 1) both; }
+
+.anim-delay-1 { animation-delay: 0.1s; }
+.anim-delay-2 { animation-delay: 0.2s; }
